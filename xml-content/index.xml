@@ -27,6 +27,11 @@
         <index>4</index>
     </item>
     <item>
+        <text>Feature 5: show plants</text>
+        <link>feature-show.xml</link>
+        <index>4</index>
+    </item>
+    <item>
         <text>About</text>
         <link>about.xml</link>
         <index>5</index>
