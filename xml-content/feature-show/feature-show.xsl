@@ -7,37 +7,36 @@
     <xsl:template match="feature">
         <html>
             <head>
-                <title>Energiewerke Mittelland Reloaded</title>
-                <link rel="stylesheet" type="text/css" href="theme.css"/>
+                <title>Solar Array Foundation</title>
+                <!-- Include Bulma CSS -->
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css"/>
             </head>
             <body>
 
+                <section class="section">
+                    <div class="container">
+                        <!-- title -->
+                        <h1 class="title">Feature Show</h1>
+                        <small>
+                            <a class="button is-small" href="index.xml">Home</a>
+                        </small>
 
-                <!-- title and nav  -->
-                <h1>Feature Show</h1>
-                <small>
-                    <a href="index.xml">Home</a>
-                </small>
+                        <div class="content">
+                            <p class="subtitle">
+                                <i>Let's access some data</i>
+                            </p>
 
-                <div class="content">
-
-                    <p>
-                        <i>Let's access some data</i>
-                    </p>
-
-
-                    <!-- load data from DB and render  -->
-                    <div>
-                        <h2>our energie plants:</h2>
-                        <ul>
-
-                        <xsl:apply-templates
-                                select="document('../solar-database/database.xml')/solarEnergyData/provider"
-                        >
-                        </xsl:apply-templates>
-                        </ul>
+                            <!-- load data from DB and render -->
+                            <div>
+                                <h2 class="is-size-4">Our energy plants:</h2>
+                                <ul>
+                                    <xsl:apply-templates select="document('../solar-database/database.xml')/solarEnergyData/provider">
+                                    </xsl:apply-templates>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </section>
 
             </body>
         </html>
