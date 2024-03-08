@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-    <!-- Definition of the root element -->
     <xs:element name="solarEnergyData">
         <xs:complexType>
             <xs:sequence>
