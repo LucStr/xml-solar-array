@@ -31,22 +31,16 @@
 
                 <section class="section">
                     <div class="container">
-                        <h1 class="title">Feature Show</h1>
-                        <small>
-                            <a class="button is-small" href="index.xml">Home</a>
-                        </small>
+                        <h1 class="title">Welcome!</h1>
 
                         <div class="content">
                             <p class="subtitle">
-                                <i>Let's access some data</i>
+                                <i>Let's checkout all energy plants</i>
                             </p>
 
-                            <div>
-                                <h2 class="is-size-4">Our energy plants:</h2>
-                                
+                            <div>                                
                                 <xsl:apply-templates select="document('../solar-database/database.xml')/solarEnergyData/provider">
                                 </xsl:apply-templates>
-                            
                             </div>
                         </div>
                     </div>
@@ -62,14 +56,22 @@
             <div class="columns">
                 <div class="column is-half">
                     <xsl:call-template name="graph">
-                        <xsl:with-param name="entries" select="productionData/productionEntry"/>
+                        <xsl:with-param name="entries" select="statistics/price"/>
                     </xsl:call-template>
                 </div>
                 <div class="column is-half">
                     <div class="vertical-fade-separator"></div>
                     <xsl:call-template name="table">
-                        <xsl:with-param name="entries" select="productionData/productionEntry"/>
+                        <xsl:with-param name="entries" select="."/>
                     </xsl:call-template>
+                    <form action="addEntry" method="post">
+                        <label for="date">Date:</label>
+                        <input type="date" id="date" name="date" />
+                        <input type="hidden" id="id" name="id" value="{@id}" />
+                        <label for="volume">Volume:</label>
+                        <input type="number" id="volume" name="volume" min="0" max="1000" />
+                        <input type="submit" value="Add Entry" />
+                    </form>
                 </div>
             </div>
         </div>
@@ -80,14 +82,16 @@
             <tr>
               <th>Date</th>
               <th>Volume</th>
+              <th>Price</th>
             </tr>
-            <xsl:for-each select="productionData/productionEntry">
+            <xsl:for-each select="statistics/price">
               <tr>
                 <td><xsl:value-of select="@date"/></td>
                 <td><xsl:value-of select="@volume"/></td>
+                <td><xsl:value-of select="text()"/></td>
               </tr>
             </xsl:for-each>
-          </table>
+        </table>
     </xsl:template>
 
     <xsl:template name="graph">
@@ -118,7 +122,7 @@
             <text x="90" y="150" font-family="Arial" font-size="24" text-anchor="end">1000</text>
             <line x1="95" y1="150" x2="105" y2="150" stroke="black" stroke-width="1"/>
             
-            <xsl:for-each select="productionData/productionEntry">
+            <xsl:for-each select="statistics/price">
                 <xsl:sort select="@date" order="ascending"/>
                 <xsl:variable name="xPos" select="position() * 150 + 100"/> 
                 <text x="{$xPos}" y="570" font-family="Arial" font-size="24" text-anchor="middle">
@@ -126,13 +130,13 @@
                 </text>
             </xsl:for-each>
             
-            <xsl:for-each select="productionData/productionEntry">
+            <xsl:for-each select="statistics/price">
                 <xsl:sort select="@date" order="ascending"/>    
                 <xsl:variable name="x" select="position() * 150 + 100"/> 
                 <xsl:variable name="y" select="550 - (@volume * $scalingFactor)"/>
                 <circle cx="{$x}" cy="{$y}" r="5" fill="red"/>
                 <xsl:if test="position() > 1">
-                    <xsl:variable name="prevVolume" select="preceding-sibling::productionEntry[1]/@volume"/>
+                    <xsl:variable name="prevVolume" select="preceding-sibling::price[1]/@volume"/>
                     <xsl:variable name="prevY" select="550 - ($prevVolume * $scalingFactor)"/>
                     <line x1="{$x - 150}" y1="{$prevY}" x2="{$x}" y2="{$y}" stroke="blue" stroke-width="2"/>
                 </xsl:if>

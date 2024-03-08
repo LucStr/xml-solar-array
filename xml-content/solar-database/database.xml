@@ -1,18 +1,17 @@
-<?xml version="1.0"?>
-<solarEnergyData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xsi:noNamespaceSchemaLocation="solarEnergyProviders.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<solarEnergyData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="solarEnergyProviders.xsd">
     <provider id="PV001" location="California">
         <name>Sunshine Solar Inc.</name>
-        <productionData>
-            <productionEntry date="2024-02-05" volume="350"/>
-            <productionEntry date="2024-02-06" volume="520"/>
-        </productionData>
+        <statistics>
+            <price date="2024-02-05" volume="350">1.2</price>
+            <price date="2024-02-06" volume="520">1.1</price>
+        </statistics>
     </provider>
     <provider id="PV002" location="Arizona">
         <name>Desert Rays LLC</name>
-        <productionData>
-            <productionEntry date="2024-02-05" volume="620"/>
-            <productionEntry date="2024-02-06" volume="630"/>
-        </productionData>
+        <statistics>
+            <price date="2024-02-05" volume="620">1.6</price>
+            <price date="2024-02-06" volume="630">1.7</price>
+        </statistics>
     </provider>
 </solarEnergyData>

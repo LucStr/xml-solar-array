@@ -12,31 +12,19 @@ app.get('/', (req, res) => {
     res.sendFile(path.resolve('xml-content', 'index.xml'));
 })
 
-app.post('/convertToPdf', async (req, res) => {
-    const response = await fetch('https://fop.xml.hslu-edu.ch/fop.php', {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
-        body: req.body,
-    });
-    const responseText = await (await response.blob()).arrayBuffer()
-    const buffer = Buffer.from(responseText)
-    fs.writeFileSync(path.resolve('temp.pdf'), buffer)
-    res.sendFile(path.resolve('temp.pdf'))
-})
-
-app.post('/updateData', (req, res) => {
+app.post('/addEntry', (req, res) => {
     const dataToUpdate = req.body
+
+    console.log(dataToUpdate)
     // read database xml
-    const databasePath = path.resolve('xml-content', 'database', 'database.xml');
+    const databasePath = path.resolve('xml-content', 'solar-database', 'database.xml');
     const databaseXml = fs.readFileSync(databasePath, 'utf-8')
     const xmlDocDatabase = libxmljs.parseXml(databaseXml)
     // select node to update
-    const plantStatistics = xmlDocDatabase.get(`//plant[name="${dataToUpdate.plant}"]/statistics`);
+    const plantStatistics = xmlDocDatabase.get(`//provider[@id="${dataToUpdate.id}"]/statistics`);
 
     // create new node with attribute etc.
-    plantStatistics.node('price', dataToUpdate.price).attr('date', dataToUpdate.date)
+    plantStatistics.node('price').attr('date', dataToUpdate.date).attr('volume', dataToUpdate.volume);
 
     console.log(xmlDocDatabase.toString())
 
@@ -50,11 +38,11 @@ app.post('/updateData', (req, res) => {
     // write new database.xml
     fs.writeFileSync(databasePath, xmlDocDatabase.toString(), 'utf-8')
 
-    res.sendStatus(200)
+    res.redirect('/feature-show.xml')
 })
 
 function validateDatabase(xmlDocDatabase) {
-    const databaseXsd = fs.readFileSync(path.resolve('xml-content', 'database', 'database.xsd'), 'utf-8')
+    const databaseXsd = fs.readFileSync(path.resolve('xml-content', 'solar-database', 'database.xsd'), 'utf-8')
     const xmlDocDatabaseXsd = libxmljs.parseXml(databaseXsd)
     return xmlDocDatabase.validate(xmlDocDatabaseXsd)
 }

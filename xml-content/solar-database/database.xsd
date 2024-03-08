@@ -7,21 +7,21 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <xs:complexType name="ProductionEntryType">
+    <xs:complexType name="PriceType">
         <xs:attribute name="date" type="xs:date" use="required"/>
         <xs:attribute name="volume" type="VolumeRange" use="required"/>
     </xs:complexType>
 
-    <xs:complexType name="ProductionDataType">
+    <xs:complexType name="StatisticsType">
         <xs:sequence>
-            <xs:element name="productionEntry" type="ProductionEntryType" maxOccurs="unbounded"/>
+            <xs:element name="price" type="PriceType" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="ProviderType">
         <xs:sequence>
             <xs:element name="name" type="xs:string"/>
-            <xs:element name="productionData" type="ProductionDataType"/>
+            <xs:element name="statistics" type="StatisticsType"/>
         </xs:sequence>
         <xs:attribute name="id" type="xs:string" use="required"/>
         <xs:attribute name="location" type="xs:string"/>
