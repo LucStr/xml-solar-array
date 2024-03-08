@@ -1,36 +1,42 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:simpleType name="VolumeRange">
+        <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="1000"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="ProductionEntryType">
+        <xs:attribute name="date" type="xs:date" use="required"/>
+        <xs:attribute name="volume" type="VolumeRange" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="ProductionDataType">
+        <xs:sequence>
+            <xs:element name="productionEntry" type="ProductionEntryType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ProviderType">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="productionData" type="ProductionDataType"/>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:string" use="required"/>
+        <xs:attribute name="location" type="xs:string"/>
+    </xs:complexType>
 
     <xs:element name="solarEnergyData">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="provider" maxOccurs="unbounded">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="name" type="xs:string"/>
-                            <xs:element name="productionData" type="ProductionData" maxOccurs="unbounded"/>
-                        </xs:sequence>
-                        <xs:attribute name="id" type="xs:string" use="required"/>
-                        <xs:attribute name="location" type="xs:string"/>
-                    </xs:complexType>
-                </xs:element>
+                <xs:element name="provider" type="ProviderType" maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:complexType>
+        <xs:unique name="uniqueProviderId">
+            <xs:selector xpath="provider"/>
+            <xs:field xpath="@id"/>
+        </xs:unique>
     </xs:element>
-
-    <xs:complexType name="ProductionData">
-        <xs:sequence>
-            <xs:element name="productionEntry" maxOccurs="unbounded">
-                <xs:complexType>
-                    <xs:simpleContent>
-                        <xs:extension base="xs:decimal">
-                            <xs:attribute name="date" type="xs:date" use="required"/>
-                            <xs:attribute name="volume" type="xs:decimal" use="required"/>
-                        </xs:extension>
-                    </xs:simpleContent>
-                </xs:complexType>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
 
 </xs:schema>
